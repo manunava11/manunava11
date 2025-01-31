@@ -1,0 +1,77 @@
+import cv2
+import os
+
+def extract_frames(video_path, output_folder, interval=1):
+    # Crea la carpeta de salida si no existe
+    if not os.path.exists(output_folder):
+        os.makedirs(output_folder)
+    
+    # Abre el video
+    video_capture = cv2.VideoCapture(video_path)
+    
+    # Obtén la cantidad de frames por segundo (fps) del video
+    fps = video_capture.get(cv2.CAP_PROP_FPS)
+    
+    # Calcula el intervalo de frames a capturar basado en los fps
+    frame_interval = int(fps * interval)
+    
+    frame_count = 0
+    success = True
+    video_name = os.path.splitext(os.path.basename(video_path))[0]
+
+    while success:
+        # Lee el siguiente frame
+        success, frame = video_capture.read()
+        
+        if not success:
+            break
+        
+        # Guarda el frame si es múltiplo del intervalo
+        if frame_count % frame_interval == 0:
+            frame_filename = os.path.join(output_folder, f"{video_name}_frame_{frame_count}.jpg")
+            cv2.imwrite(frame_filename, frame)
+            print(f"Guardado {frame_filename}")
+        
+        frame_count += 1
+    
+    # Libera el video
+    video_capture.release()
+    print(f"Extracción de frames completada para {video_name}.")
+
+def process_videos_in_folder(input_folder, output_base_folder, interval=1):
+    print(f"Procesando videos en la carpeta: {input_folder}")
+
+    # Verifica si la carpeta de entrada existe
+    if not os.path.exists(input_folder):
+        print(f"La carpeta {input_folder} no existe.")
+        return
+
+    videos_procesados = 0
+    # Recorre todos los archivos en la carpeta de entrada
+    for filename in os.listdir(input_folder):
+        # Comprueba si el archivo es un video (puedes agregar más extensiones si es necesario)
+        if filename.endswith(('.mp4', '.avi', '.mov', '.mkv', '.MP4')):
+            video_path = os.path.join(input_folder, filename)
+            video_name = os.path.splitext(filename)[0]
+            print("Hay un video")
+            # Crear una carpeta para los frames del video
+            output_folder = os.path.join(output_base_folder, f"{video_name}_frame")
+            os.makedirs(output_folder, exist_ok=True)
+            print(f"Procesando video: {video_path}")
+
+            # Extraer frames del video
+            extract_frames(video_path, output_folder, interval)
+            videos_procesados += 1
+
+    if videos_procesados == 0:
+        print("No se encontraron videos en la carpeta especificada.")
+    else:
+        print(f"Se procesaron {videos_procesados} videos.")
+
+# Ejemplo de uso:
+input_folder = r'C:\Users\Manuel\Desktop\Carpeta Visual\Bovinos\Videos'
+output_base_folder = r'C:\Users\Manuel\Desktop\Carpeta Visual\Bovinos\Imagenes'
+
+interval = 0.5 # Intervalo en segundos
+
+process_videos_in_folder(input_folder, output_base_folder, interval)

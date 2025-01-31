@@ -1,0 +1,58 @@
+import os
+from pathlib import Path
+import re
+
+def renombrar_videos_suma_n(folder, n, prefix="cow"):
+    # Función para extraer el número después del prefijo
+    def extract_number(file_name):
+        match = re.match(rf"{prefix}(\d+)_", file_name)  # Buscar el número después de 'cow'
+        return int(match.group(1)) if match else None  # Devolver el número como entero
+
+    # Listar archivos válidos (con extensiones de video)
+    files = [f for f in os.listdir(folder) if f.lower().endswith(('.mp4', '.avi', '.mov', '.mkv'))]
+
+    # Ordenar archivos por el número después del prefijo 'cow'
+    files = sorted(
+        files, key=lambda x: extract_number(x) if extract_number(x) is not None else float("inf"),
+        reverse=(n > 0)  # Orden inverso si n es positivo
+    )
+
+    # Renombrar archivos
+    for file_name in files:
+        # Extraer el número después del prefijo 'cow'
+        match = re.match(rf"{prefix}(\d+)_", file_name)
+        if not match:
+            continue  # Saltar archivos que no coinciden con el formato
+
+        current_id = int(match.group(1))  # Número actual extraído
+        new_id = current_id + n  # Aplicar el desplazamiento
+
+        # Mantener el resto del nombre después del primer guion bajo
+        rest_of_name = file_name.split("_", 1)[1]  # Tomar todo después del primer '_'
+
+        # Crear el nuevo nombre
+        new_name = f"{prefix}{new_id}_{rest_of_name}"
+        old_path = os.path.join(folder, file_name)
+        new_path = os.path.join(folder, new_name)
+
+        # Resolver conflictos si el nombre ya existe
+        counter = 1
+        base_new_name = new_name
+        while os.path.exists(new_path):
+            name_part, ext = os.path.splitext(base_new_name)
+            new_name = f"{name_part}_{counter}{ext}"
+            new_path = os.path.join(folder, new_name)
+            counter += 1
+
+        # Renombrar archivo
+        os.rename(old_path, new_path)
+        print(f"Renombrado: {file_name} -> {new_name}")
+
+    print("Renombrado completado.")
+
+# Parámetros
+carpeta_videos = r'C:\Users\Manuel\Desktop\Carpeta Visual\DatasetBarracas7m\sumar1'  # Ruta a la carpeta de videos
+n = 1  # Desplazamiento (puede ser positivo o negativo)
+
+# Ejecutar función
+renombrar_videos_suma_n(carpeta_videos, n)

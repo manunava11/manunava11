@@ -1,0 +1,33 @@
+import os
+import re
+
+def rename_folders_subtract(directory,n):
+    # Expresión regular para identificar carpetas con el formato específico
+    pattern = re.compile(r"^(.*?)(\d+)$")
+
+    # Recoger y ordenar las carpetas con número final de menor a mayor
+    folders = []
+    for folder_name in os.listdir(directory):
+        folder_path = os.path.join(directory, folder_name)
+        if os.path.isdir(folder_path):
+            match = pattern.match(folder_name)
+            if match:
+                prefix = match.group(1)
+                number = int(match.group(2))
+                folders.append((folder_name, folder_path, prefix, number))
+
+    # Ordenar las carpetas por el número final de menor a mayor
+    folders.sort(key=lambda x: x[3])
+
+    # Renombrar las carpetas en el orden adecuado
+    for folder_name, folder_path, prefix, number in folders:
+        new_folder_name = f"{prefix}{number - n}"
+        new_folder_path = os.path.join(directory, new_folder_name)
+
+        # Renombrar la carpeta
+        os.rename(folder_path, new_folder_path)
+        print(f"Renombrado: {folder_name} -> {new_folder_name}")
+
+# Cambia 'ruta_del_directorio' por la ruta de tu directorio
+directory_path = r'C:\Users\Manuel\Desktop\Carpeta Visual\ADPDataset\V3_3_frame'
+rename_folders_subtract(directory_path,1)
