@@ -60,7 +60,7 @@ def hacer_numeros_continuos(ruta_principal, prefix="cow"):
     print("Numeración continua completada.")
 
 # Parámetros
-ruta_principal = r"C:\Users\Manuel\Desktop\Carpeta Visual\DatasetElOmbuss\DatasetElOmbu"  # Ruta principal
+ruta_principal = r"C:\Users\Manuel\Desktop\Carpeta Visual\GordasSantaIsa"  # Ruta principal
 
 # Ejecutar funciones
 reformatear_nombres_carpetas(ruta_principal)

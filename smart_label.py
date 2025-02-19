@@ -56,6 +56,6 @@ def process_image_folder(folder_path, output_folder):
             process_image(image_path, output_folder)
 
 # Ejemplo de uso
-input_folder = r'C:\Users\Manuel\Desktop\Carpeta Visual\Bovinos\Imagenes\DJI_0391_frame'  # Carpeta con las imágenes a procesar
-output_folder = r'C:\Users\Manuel\Desktop\Carpeta Visual\Bovinos\Imagenes\DJI_0391_frame'  # Carpeta donde se guardarán "labels" e "images"
+input_folder = r"C:\Users\Manuel\Desktop\Carpeta Visual\LabelNow\DJI_0715_frame"  # Carpeta con datasets
+output_folder = r"C:\Users\Manuel\Desktop\Carpeta Visual\Labeled"  # Carpeta de salida
 process_image_folder(input_folder, output_folder)  # Procesar todas las imágenes en la carpeta

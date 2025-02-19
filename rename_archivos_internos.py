@@ -45,7 +45,7 @@ def renombrar_imagenes_en_carpetas(ruta_principal):
     print("Renombrado completado.")
 
 # Parámetros
-ruta_principal = r"C:\Users\Manuel\Desktop\Carpeta Visual\DatasetElOmbu"  # Ruta principal donde están las carpetas
+ruta_principal = r"C:\Users\Manuel\Desktop\Carpeta Visual\GordasCutoff"  # Ruta principal donde están las carpetas
 
 # Ejecutar función
 renombrar_imagenes_en_carpetas(ruta_principal)

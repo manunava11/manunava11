@@ -26,13 +26,13 @@ def verificar_videos_con_pocos_frames(ruta):
             cap.release()
 
             # Verificar si el video tiene menos de 7 frames
-            if total_frames < 10:
+            if total_frames < 20:
                 print(f"El video '{archivo}' tiene {total_frames} frames (menos de 7).")
 
     print("Verificación completada.")
 
 # Parámetros
-ruta_videos = r'C:\Users\Manuel\Desktop\Carpeta Visual\DatasetBarracas7m\bien\Las100'
+ruta_videos = r'C:\Users\Manuel\Desktop\Carpeta Visual\DataGordas'
 
 # Ejecutar función
 verificar_videos_con_pocos_frames(ruta_videos)

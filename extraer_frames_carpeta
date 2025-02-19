@@ -69,9 +69,9 @@ def process_videos_in_folder(input_folder, output_base_folder, interval=1):
         print(f"Se procesaron {videos_procesados} videos.")
 
 # Ejemplo de uso:
-input_folder = r'C:\Users\Manuel\Desktop\Carpeta Visual\Bovinos\Videos'
-output_base_folder = r'C:\Users\Manuel\Desktop\Carpeta Visual\Bovinos\Imagenes'
+input_folder = r'C:\Users\Manuel\Desktop\Carpeta Visual\Tolabel'
+output_base_folder = r'C:\Users\Manuel\Desktop\Carpeta Visual\LabelNow'
 
-interval = 0.5 # Intervalo en segundos
+interval = 1 # Intervalo en segundos
 
 process_videos_in_folder(input_folder, output_base_folder, interval)

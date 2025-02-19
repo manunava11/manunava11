@@ -4,9 +4,9 @@ from ultralytics import YOLO
 import torch
 
 # Rutas de los archivos
-video_input_path = r'C:\Users\Manuel\Desktop\Carpeta Visual\Bovinos\Videos\Andabien.MP4'
+video_input_path = r'C:\Users\Manuel\Desktop\Carpeta Visual\Ovinos\Videos\DJI_0386.MP4'
 model_folder = r'C:\Users\Manuel\Desktop\Carpeta Visual\Sistema-De-Conteo-De-Ganado\EntrenarYolov8'
-output_folder = r'C:\Users\Manuel\Desktop\Carpeta Visual\Bovinos'
+output_folder = r'C:\Users\Manuel\Desktop\Carpeta Visual\Ovinos'
 
 # Verificar si CUDA está disponible
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
@@ -14,7 +14,7 @@ print(f"Using device: {device}")
 
 # Cargar el modelo YOLOv11
 #model = YOLO('yolo11x.pt').to(device)
-model = YOLO(os.path.join(model_folder, r'ovejas.pt')).to(device)
+model = YOLO(os.path.join(model_folder, r'last_train_ovejas.pt')).to(device)
 
 # Abrir el video
 cap = cv2.VideoCapture(video_input_path)
@@ -41,7 +41,7 @@ while cap.isOpened():
         break
 
     # Realizar la detección de objetos
-    results = model.track(frame, persist=True, show=False, conf=0.5, iou=0.6, tracker="botsort.yaml")
+    results = model.track(frame, persist=True, show=False, conf=0.5, iou=0.4, tracker="botsort.yaml")
 
     # Revisar cada detección en los resultados
     for detection in results[0].boxes:  # results[0] para acceder a los elementos individuales en la lista

@@ -49,7 +49,7 @@ def hacer_videos_continuos(ruta, prefix="cow"):
     print("Renombrado completado. Los archivos son ahora continuos.")
 
 # Parámetros
-ruta_videos = r'C:\Users\Manuel\Desktop\Carpeta Visual\DatasetBarracas7m'  # Ruta a la carpeta de videos
+ruta_videos = r'C:\Users\Manuel\Desktop\Carpeta Visual\DataGordas'  # Ruta a la carpeta de videos
 
 # Ejecutar función
 hacer_videos_continuos(ruta_videos)

@@ -9,7 +9,7 @@ device = 'cuda' if torch.cuda.is_available() else 'cpu'
 print(f"Using device: {device}")
 
 # Cargar el modelo YOLO
-model = YOLO(r"C:\Users\Manuel\Desktop\Carpeta Visual\Sistema-De-Conteo-De-Ganado\EntrenarYolov8\ovejas.pt").to(device)
+model = YOLO(r"C:\Users\Manuel\Desktop\Carpeta Visual\Sistema-De-Conteo-De-Ganado\EntrenarYolov8\v11l_ft_detection_model.pt").to(device)
 
 def iou(box1, box2):
     """Calcula el IoU (Intersection over Union) entre dos bounding boxes."""
@@ -32,7 +32,7 @@ def iou(box1, box2):
     union_area = box1_area + box2_area - inter_area
     return inter_area / union_area if union_area > 0 else 0
 
-def apply_nms(boxes, iou_threshold=0.5):
+def apply_nms(boxes, iou_threshold=0.4):
     """Elimina detecciones con alto solapamiento (IoU > umbral)."""
     if not boxes:
         return []
@@ -72,7 +72,7 @@ def process_image(image_path, output_folder):
                 detected_boxes.append([x1, y1, x2, y2, 0, confidence])  # [x1, y1, x2, y2, class_id, conf]
 
     # Aplicar NMS con IoU threshold de 0.5
-    filtered_boxes = apply_nms(detected_boxes, iou_threshold=0.5)
+    filtered_boxes = apply_nms(detected_boxes, iou_threshold=0.4)
 
     # Guardar etiquetas normalizadas
     txt_filename = os.path.splitext(image_name)[0] + ".txt"
@@ -112,7 +112,7 @@ def process_image_folder(folder_path, output_folder):
             process_image(image_path, output_folder)
 
 if __name__ == "__main__":
-    input_root = r"C:\Users\Manuel\Desktop\Carpeta Visual\Bovinos\Imagenes"  # Carpeta con datasets
-    output_root = r"C:\Users\Manuel\Desktop\Carpeta Visual\Bovinos\Resultados"  # Carpeta de salida
+    input_root = r"C:\Users\Manuel\Desktop\Carpeta Visual\LabelNow\DJI_0701_frame"  # Carpeta con datasets
+    output_root = r"C:\Users\Manuel\Desktop\Carpeta Visual\Labeled"  # Carpeta de salida
 
     process_dataset(input_root, output_root)  # Procesar todas las carpetas

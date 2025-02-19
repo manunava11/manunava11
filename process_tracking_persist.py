@@ -5,11 +5,11 @@ import cv2
 import torch
 
 # Parámetros configurables
-input_folder = r'C:\Users\Manuel\Desktop\Carpeta Visual\Barracas7man'
-output_folder = r'C:\Users\Manuel\Desktop\Carpeta Visual\DatasetBarracas7m'
-model_path = r'C:\Users\Manuel\Desktop\Carpeta Visual\Sistema-De-Conteo-De-Ganado\EntrenarYolov8\v11x_ft_detection_model.pt'
+input_folder = r'C:\Users\Manuel\Desktop\Carpeta Visual\Gordas\dou'
+output_folder = r'C:\Users\Manuel\Desktop\Carpeta Visual\DataGordas'
+model_path = r'C:\Users\Manuel\Desktop\Carpeta Visual\Sistema-De-Conteo-De-Ganado\EntrenarYolov8\v11l_ft_detection_model.pt'
 PERSISTENCE_THRESHOLD = 7  # Frames mínimos para validar una detección
-start_id = 1  # Número inicial para los videos generados
+start_id = 58  # Número inicial para los videos generados
 
 # Configuración del modelo y dispositivo
 device = 'cuda' if torch.cuda.is_available() else 'cpu'

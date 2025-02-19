@@ -24,7 +24,7 @@ def verificar_carpetas_con_pocas_imagenes(ruta_principal):
     print("Verificación completada.")
 
 # Parámetros
-ruta_principal = r'C:\Users\Manuel\Desktop\Carpeta Visual\DatasetBarracas7m\bien\Las100'
+ruta_principal = r'C:\Users\Manuel\Desktop\Carpeta Visual\GordasSantaIsa'
 
 # Ejecutar función
 verificar_carpetas_con_pocas_imagenes(ruta_principal)

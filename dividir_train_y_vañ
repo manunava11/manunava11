@@ -1,0 +1,54 @@
+import os
+import shutil
+import random
+from pathlib import Path
+
+def split_dataset(dataset_dir, output_dir, train_ratio=0.8, seed=3):
+    random.seed(seed)
+    
+    dataset_path = Path(dataset_dir)
+    output_path = Path(output_dir)
+    train_path = output_path / 'train'
+    val_path = output_path / 'val'
+
+    # Create train and val directories
+    train_path.mkdir(parents=True, exist_ok=True)
+    val_path.mkdir(parents=True, exist_ok=True)
+
+    # Get list of all image files
+    image_extensions = ['.jpg', '.jpeg', '.png']
+    images = [file for file in dataset_path.iterdir() if file.suffix.lower() in image_extensions]
+
+    # Debug: Print number of images found in the dataset directory
+    print(f'Found {len(images)} images in the dataset directory.')
+
+    if not images:
+        print(f'No images found in the dataset directory, exiting.')
+        return
+
+    # Shuffle and split the images
+    random.shuffle(images)
+    train_size = int(len(images) * train_ratio)
+
+    train_images = images[:train_size]
+    val_images = images[train_size:]
+
+    def move_files(image_list, destination_path):
+        for img in image_list:
+            txt_file = img.with_suffix('.txt')
+            shutil.copy(img, destination_path / img.name)
+            print(f'Copying {img} to {destination_path / img.name}')
+            if txt_file.exists():
+                shutil.copy(txt_file, destination_path / txt_file.name)
+                print(f'Copying {txt_file} to {destination_path / txt_file.name}')
+            else:
+                print(f'Warning: Label file {txt_file} does not exist for image {img}')
+
+    # Move files to train and val directories
+    move_files(train_images, train_path)
+    move_files(val_images, val_path)
+
+    print(f'Dataset split completed. Train: {train_path}, Validation: {val_path}')
+
+# Example usage
+split_dataset(r'C:\Users\Manuel\Desktop\Carpeta Visual\Ovinos\Resultados\images', r'C:\Users\Manuel\Desktop\Carpeta Visual\Ovinos\Resultados')

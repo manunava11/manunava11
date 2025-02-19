@@ -5,8 +5,8 @@ import random
 
 def adjust_brightness_contrast(image):
     """Ajusta el brillo y contraste aleatoriamente."""
-    alpha = random.uniform(0.5, 1.5)  # Factor de contraste (0.8 a 1.2)
-    beta = random.randint(-50, 50)    # Brillo (-30 a 30)
+    alpha = random.uniform(0.7, 1.2)  # Factor de contraste (0.8 a 1.2)
+    beta = random.randint(-40, 20)    # Brillo (-30 a 30)
     return cv2.convertScaleAbs(image, alpha=alpha, beta=beta)
 
 def rotate_image_and_labels(image, labels, angle):
@@ -26,24 +26,24 @@ def rotate_image_and_labels(image, labels, angle):
     # Transformar bounding boxes
     updated_labels = []
     for label in labels:
-        cls, x_center, y_center, width, height = map(float, label.split())
+        if label.strip():  # Asegurarse de que la línea no esté vacía
+            cls, x_center, y_center, width, height = map(float, label.split())
+            if angle == 90:
+                new_x = y_center
+                new_y = 1 - x_center
+                new_w, new_h = height, width
+            elif angle == 180:
+                new_x = 1 - x_center
+                new_y = 1 - y_center
+                new_w, new_h = width, height
+            elif angle == 270:
+                new_x = 1 - y_center
+                new_y = x_center
+                new_w, new_h = height, width
+            else:
+                new_x, new_y, new_w, new_h = x_center, y_center, width, height
 
-        if angle == 90:
-            new_x = y_center
-            new_y = 1 - x_center
-            new_w, new_h = height, width
-        elif angle == 180:
-            new_x = 1 - x_center
-            new_y = 1 - y_center
-            new_w, new_h = width, height
-        elif angle == 270:
-            new_x = 1 - y_center
-            new_y = x_center
-            new_w, new_h = height, width
-        else:
-            new_x, new_y, new_w, new_h = x_center, y_center, width, height
-
-        updated_labels.append(f"{int(cls)} {new_x:.6f} {new_y:.6f} {new_w:.6f} {new_h:.6f}")
+            updated_labels.append(f"{int(cls)} {new_x:.6f} {new_y:.6f} {new_w:.6f} {new_h:.6f}")
 
     return rotated_image, updated_labels
 
@@ -78,20 +78,17 @@ def process_dataset(root_path):
             # Aplicar transformación de brillo y contraste
             modified_image = adjust_brightness_contrast(image)
 
-            # Seleccionar rotación aleatoria de 0, 90, 180 o 270 grados
-            angle = random.choice([0,180])
+            # Seleccionar rotación aleatoria de 90, 180 o 270 grados
+            angle = random.choice([0, 180])
             rotated_image, updated_labels = rotate_image_and_labels(modified_image, labels, angle)
 
-            # Guardar imagen aumentada
-            new_image_path = image_path.replace(".jpg", f"aug{angle}.jpg").replace(".png", f"aug{angle}.png")
-            cv2.imwrite(new_image_path, rotated_image)
-
-            # Guardar etiquetas modificadas
-            new_label_path = label_path.replace(".txt", f"aug{angle}.txt")
-            with open(new_label_path, "w") as f:
-                f.writelines("\n".join(updated_labels))
-
-            print(f"Procesado: {new_image_path}")
+            # Guardar imagen aumentada sobrescribiendo la original
+            cv2.imwrite(image_path, rotated_image)
+            # Guardar etiquetas modificadas sobrescribiendo las originales
+            with open(label_path, "w") as f:
+                f.writelines(f"{label.strip()}\n" for label in updated_labels)
+              
+            print(f"Procesado: {image_path}")
 
 if __name__ == "__main__":
     ruta = r'C:\Users\Manuel\Desktop\Carpeta Visual\Bovinos\ImagenesNew'
